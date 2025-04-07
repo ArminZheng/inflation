@@ -1,7 +1,9 @@
 package com.arminzheng.inflation.theory.stream;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
@@ -81,5 +83,25 @@ public class ThreeMainStream {
                     }
                     System.out.println(e);
                 });
+    }
+
+    /**
+     * special flatMap: Stream.empty().
+     */
+    public static void testII() {
+
+        List<Object> conditions = List.of(List.of("a", "b"), List.of("c", "d"));
+        List<String> specialFlatMap = conditions.stream().flatMap(e -> {
+            // use Stream.empty() to remove ir.rel.e.vant element.
+            return e instanceof List ? ((List<?>) e).stream().map(String::valueOf) : Stream.empty();
+        }).collect(Collectors.toList());
+        System.out.println(specialFlatMap);
+    }
+
+    /**
+     * sealed code.
+     */
+    private String formatCurrentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     }
 }
