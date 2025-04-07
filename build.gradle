@@ -24,6 +24,8 @@ dependencies {
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
 
+  implementation 'org.apache.rocketmq:rocketmq-client-java:5.0.7'
+
   runtimeOnly 'com.h2database:h2'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation('com.github.javafaker:javafaker:1.0.2') {
