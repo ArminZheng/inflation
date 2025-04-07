@@ -1,4 +1,4 @@
-package com.arminzheng.inflation.function;
+package com.arminzheng.inflation.theory.function;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

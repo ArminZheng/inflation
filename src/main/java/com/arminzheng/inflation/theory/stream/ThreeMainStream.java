@@ -1,4 +1,4 @@
-package com.arminzheng.inflation.stream;
+package com.arminzheng.inflation.theory.stream;
 
 import java.util.ArrayList;
 import java.util.Collections;
