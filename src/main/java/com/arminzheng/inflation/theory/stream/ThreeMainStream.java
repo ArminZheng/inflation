@@ -29,8 +29,8 @@ public class ThreeMainStream {
                 .parallel() // ForkJoin only
                 .mapToLong(Long::longValue).summaryStatistics();
 
-        // custom fork-join thread-pool
-        ForkJoinPool customThreadPool = new ForkJoinPool(4);
+        // custom fork-join thread-pool (CPU-intensive) (Default parallelism is availableProcessors)
+        ForkJoinPool customThreadPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
         try {
             // flatMap 展平 操作 element -> Stream
             double average = customThreadPool.submit(
