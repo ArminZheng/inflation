@@ -21,8 +21,15 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
   runtimeOnly 'com.mysql:mysql-connector-j'
+  // lombok
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
+  testCompileOnly 'org.projectlombok:lombok'
+  testAnnotationProcessor 'org.projectlombok:lombok'
+  // mapstruct
+  implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+  testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
   implementation 'org.apache.rocketmq:rocketmq-client-java:5.0.7'
 
