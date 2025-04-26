@@ -30,6 +30,8 @@ dependencies {
   implementation 'org.mapstruct:mapstruct:1.5.3.Final'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
   testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+  // InfluxDB
+  implementation 'org.influxdb:influxdb-java:2.25'
 
   implementation 'org.apache.rocketmq:rocketmq-client-java:5.0.7'
 
