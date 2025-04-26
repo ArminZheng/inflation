@@ -1,0 +1,4 @@
+# Auto Configure (not working for Spring Boot 3.X)
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=
+# Application Listener (not working for Spring Boot 3.X)
+org.springframework.context.ApplicationListener=
