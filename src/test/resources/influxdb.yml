@@ -9,6 +9,10 @@ volumes:
       device: $PWD/influx/
 
 services:
+  # Basic types in InfluxDB
+  # All Flux data types are constructed from basic types:
+  #   all types: boolean, bytes, duration(1ns, 1h, 1w, 3d1h2s), string, time, float, integer, uintegers, and null.
+  #   mainly: boolean, string, float, integer, null.
   influxdb:
     # image: influxdb:1.11.8
     image: influxdb:1.11
