@@ -34,7 +34,7 @@ services:
     ports:
       - 8080:8080
       - 8081:8081
-    restart: on-failure
+    # restart: on-failure # on demand
     environment:
       - NAMESRV_ADDR=rmqnamesrv:9876
     command: sh mqproxy
