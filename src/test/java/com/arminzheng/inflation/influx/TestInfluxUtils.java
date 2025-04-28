@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.concurrent.NotThreadSafe;
 import org.influxdb.InfluxDB;
@@ -44,6 +43,11 @@ public class TestInfluxUtils {
         return exec("CREATE DATABASE " + databaseName);
     }
 
+    public void createDatabaseD(String databaseName) {
+        QueryResult database = createDatabase(databaseName);
+        display(database);
+    }
+
     @Deprecated
     public QueryResult insertWrong(String retentionPolicy, String measurementTag, String field) {
         // query not support INSERT statement
@@ -67,7 +71,8 @@ public class TestInfluxUtils {
             builder.fields(fields);
         }
         // builder.time(new Date().getTime(), TimeUnit.MILLISECONDS);
-        builder.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+        // builder.time(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+        // no needed. auto generate time tag
         insert(builder.build());
     }
 
@@ -165,8 +170,27 @@ public class TestInfluxUtils {
         return exec("DROP DATABASE " + databaseName);
     }
 
+    public void dropDatabaseD(String databaseName) {
+        QueryResult result = dropDatabase(databaseName);
+        display(result);
+    }
+
     public QueryResult showDatabases() {
         return exec("SHOW DATABASES");
+    }
+
+    public void showDatabasesD() {
+        QueryResult result = showDatabases();
+        display(result);
+    }
+
+    public QueryResult showRetentionPolicies() {
+        return exec("SHOW RETENTION POLICIES");
+    }
+
+    public void showRetentionPoliciesD() {
+        QueryResult result = showRetentionPolicies();
+        display(result);
     }
 
     // 格式化值的辅助方法

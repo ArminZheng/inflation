@@ -20,11 +20,40 @@ import org.junit.jupiter.api.Test;
 public class TestInflux {
 
     private InfluxDB influxDB;
+    private TestInfluxUtils influx;
+    private static final String DATABASE = "history";
 
     @BeforeEach
     public void before() {
         final String serverURL = "http://127.0.0.1:8086", username = "root", password = "root";
         influxDB = InfluxDBFactory.connect(serverURL, username, password);
+        influx = new TestInfluxUtils(influxDB);
+    }
+
+    @Test
+    void testRetentionPolicy() {
+        influx.createDatabaseD(DATABASE);
+        influx.use(DATABASE);
+        // 168h is 7 days
+        influx.execD("create retention policy history_policy on history duration 168h replication 1 shard duration 168h default");
+        influx.showRetentionPoliciesD();
+        influx.execD("alter retention policy autogen on history default");
+        influx.showRetentionPoliciesD();
+        influx.execD("drop retention policy history_policy on history");
+        influx.showRetentionPoliciesD();
+    }
+
+    @Test
+    public void testAdvanceQuery() {
+        influx.use(DATABASE);
+        // select *::field from measurement
+        influx.execD("select * from cpu");
+        influx.execD("select *::field from cpu");
+        // select tag1,tag2,field1 from measurement // at least one field is needed. just tag is not enough
+        // like: select * from measurement person_name=~/hello$/
+        influx.execD("select * from cpu where temp=~/23/");
+        // in: select * from measurement person_name =~/^hello$|^world$/
+        influx.execD("select * from cpu where host=~/^server01$/^server02$/");
     }
 
     @Test
@@ -48,13 +77,13 @@ public class TestInflux {
     }
 
     @Test
-    public void testIII() {
+    public void testMeasurement() {
         TestInfluxUtils influx = new TestInfluxUtils(influxDB);
-        influx.execD("SHOW DATABASES");
-        String databaseName = "NOAA_water_database";
-        influx.createDatabase(databaseName);
-        influx.use(databaseName);
-        boolean b = influxDB.databaseExists(databaseName);
+        influx.showDatabasesD();
+        influx.dropDatabaseD(DATABASE);
+        influx.createDatabaseD(DATABASE);
+        influx.use(DATABASE);
+        boolean b = influxDB.databaseExists(DATABASE);
         println("is exist? = " + b);
         Map<String, String> tag1 = Map.of("host", "server01", "region", "us-west");
         Map<String, Object> field1 = Map.of("cpu_usage", 0.64, "temp", 23.1);
@@ -90,12 +119,11 @@ public class TestInflux {
         // final String serverURL = "http://127.0.0.1:8086", username = "root", password = "root";
         // final InfluxDB influxDB = InfluxDBFactory.connect(serverURL, username, password);
         QueryResult showDatabases = influxDB.query(new Query("SHOW DATABASES"));
-        System.out.println(showDatabases);
-        String databaseName = "NOAA_water_database";
-        influxDB.query(new Query("CREATE DATABASE " + databaseName));
-        influxDB.setDatabase(databaseName);
-        boolean b = influxDB.databaseExists(databaseName);
-        System.out.println("is exist? = " + b);
+        println(showDatabases);
+        influxDB.query(new Query("CREATE DATABASE " + DATABASE));
+        influxDB.setDatabase(DATABASE);
+        boolean b = influxDB.databaseExists(DATABASE);
+        println("is exist? = " + b);
         showDatabases = influxDB.query(new Query("SHOW DATABASES"));
         showDatabases.getResults().forEach(result -> {
             result.getSeries().forEach(series -> {
@@ -104,10 +132,10 @@ public class TestInflux {
                 });
             });
         });
-        QueryResult dropQuery = influxDB.query(new Query("DROP DATABASE " + databaseName));
-        System.out.println(dropQuery);
-        b = influxDB.databaseExists(databaseName);
-        System.out.println("is exist? = " + b);
+        QueryResult dropQuery = influxDB.query(new Query("DROP DATABASE " + DATABASE));
+        println(dropQuery);
+        b = influxDB.databaseExists(DATABASE);
+        println("is exist? = " + b);
     }
 
     @Test
@@ -119,7 +147,7 @@ public class TestInflux {
 
         // Create a database...
         // https://docs.influxdata.com/influxdb/v1.7/query_language/database_management/
-        String databaseName = "NOAA_water_database";
+        String databaseName = DATABASE;
         influxDB.query(new Query("CREATE DATABASE " + databaseName));
         influxDB.setDatabase(databaseName);
 
