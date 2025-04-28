@@ -1,4 +1,4 @@
-package com.arminzheng.inflation.mapstruct;
+package com.arminzheng.inflation.dto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import lombok.Data;
 public class UserDTO implements Serializable {
     private String username;
     private int age;
-    private String showTitle;
+    private String workMail;
     private String employeeStartDt;
     private Date endDt;
     private String external;
