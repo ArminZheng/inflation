@@ -34,5 +34,4 @@ public class BootConfigBean {
         this.configExplain = configExplain;
     }
 
-
 }

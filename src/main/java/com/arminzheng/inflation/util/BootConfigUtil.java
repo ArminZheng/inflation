@@ -34,7 +34,7 @@ public class BootConfigUtil {
         oracleConfig.getDetailedParams().add("password");
         list.add(oracleConfig);
 
-        BootConfigBean redisConfig = new BootConfigBean("spring.redis",
+        BootConfigBean redisConfig = new BootConfigBean("spring.data.redis",
                 "Redis configuration information");
         redisConfig.getDetailedParams().add("database");
         redisConfig.getDetailedParams().add("host");
