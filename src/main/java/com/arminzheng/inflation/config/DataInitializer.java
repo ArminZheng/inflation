@@ -3,13 +3,16 @@ package com.arminzheng.inflation.config;
 import com.arminzheng.inflation.model.User;
 import com.arminzheng.inflation.repository.UserRepository;
 import com.github.javafaker.Faker;
+import java.util.Locale;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Locale;
-
 @Configuration
+@EnableCaching
+@EnableConfigurationProperties(InfluxDBProperties.class)
 public class DataInitializer {
 
     @Bean
