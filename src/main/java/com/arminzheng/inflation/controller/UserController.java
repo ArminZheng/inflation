@@ -1,6 +1,7 @@
 package com.arminzheng.inflation.controller;
 
 import com.arminzheng.inflation.dto.UserDTO;
+import com.arminzheng.inflation.model.User;
 import com.arminzheng.inflation.service.UserService;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,14 @@ public class UserController {
         return userService.orderedStream()
                 .map(UserService::allUsers).filter(e -> e != null && !e.isEmpty())
                 .flatMap(List::stream).collect(Collectors.toList());
+    }
+    @GetMapping("find/{id}")
+    public User findById(@PathVariable Long id) {
+        return userService.orderedStream().findFirst().get().findById(id);
+    }
+    @GetMapping("test")
+    public List<User> test() {
+        return userService.orderedStream().findFirst().get().test();
     }
 
     @GetMapping("statistics")
