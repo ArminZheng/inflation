@@ -1,6 +1,7 @@
 package com.arminzheng.inflation;
 
 import com.arminzheng.inflation.util.BootConfigUtil;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.boot.web.context.WebServerPortFileWriter;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 
 @SpringBootApplication
+@MapperScan(basePackages = "com.arminzheng.inflation.mapper")
 public class App {
 
     private static final Logger log = LoggerFactory.getLogger(App.class);

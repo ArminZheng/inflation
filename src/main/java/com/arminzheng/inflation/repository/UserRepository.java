@@ -1,16 +1,16 @@
 package com.arminzheng.inflation.repository;
 
-import com.arminzheng.inflation.model.User;
+import com.arminzheng.inflation.model.UserPO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserPO, Long> {
 
-    User findByEmail(String email);
+    UserPO findByEmail(String email);
 
-    List<User> findByNameContaining(String name);
+    List<UserPO> findByNameContaining(String name);
 
     boolean existsByEmail(String email);
 }

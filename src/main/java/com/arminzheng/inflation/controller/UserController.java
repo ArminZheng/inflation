@@ -1,7 +1,7 @@
 package com.arminzheng.inflation.controller;
 
 import com.arminzheng.inflation.dto.UserDTO;
-import com.arminzheng.inflation.model.User;
+import com.arminzheng.inflation.model.UserPO;
 import com.arminzheng.inflation.service.UserService;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +36,11 @@ public class UserController {
                 .flatMap(List::stream).collect(Collectors.toList());
     }
     @GetMapping("find/{id}")
-    public User findById(@PathVariable Long id) {
+    public UserPO findById(@PathVariable Long id) {
         return userService.orderedStream().findFirst().get().findById(id);
     }
     @GetMapping("test")
-    public List<User> test() {
+    public List<UserPO> test() {
         return userService.orderedStream().findFirst().get().test();
     }
 

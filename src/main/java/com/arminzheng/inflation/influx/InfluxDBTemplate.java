@@ -1,4 +1,4 @@
-package com.arminzheng.inflation.client;
+package com.arminzheng.inflation.influx;
 
 import com.arminzheng.inflation.config.InfluxDBProperties;
 import com.arminzheng.inflation.util.BeanUtils;
@@ -38,7 +38,7 @@ public class InfluxDBTemplate {
         if (influxDB != null) {
             return;
         }
-        final String serverURL = influxDBProperties.getServerURL();
+        final String serverURL = influxDBProperties.getUrl();
         final String username = influxDBProperties.getUsername();
         final String password = influxDBProperties.getPassword();
         this.influxDB = InfluxDBFactory.connect(serverURL, username, password);

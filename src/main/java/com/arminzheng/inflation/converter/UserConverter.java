@@ -1,7 +1,7 @@
 package com.arminzheng.inflation.converter;
 
 import com.arminzheng.inflation.dto.UserDTO;
-import com.arminzheng.inflation.model.User;
+import com.arminzheng.inflation.model.UserPO;
 import java.util.List;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeforeMapping;
@@ -14,8 +14,8 @@ import org.mapstruct.MappingTarget;
 public abstract class UserConverter {
 
     @BeforeMapping
-    protected void enrichDTOWithFuelType(User user, @MappingTarget UserDTO userDto) {
-        userDto.setExternal(user.getCreateTime() + " (external)");
+    protected void enrichDTOWithFuelType(UserPO userPO, @MappingTarget UserDTO userDto) {
+        userDto.setExternal(userPO.getCreateTime() + " (external)");
     }
 
     @AfterMapping
@@ -27,15 +27,15 @@ public abstract class UserConverter {
     @Mapping(source = "email", target = "workMail")
     @Mapping(source = "createTime", target = "employeeStartDt", dateFormat = "MM-dd-yyyy HH:mm:ss")
     @Mapping(target = "external", ignore = true)
-    public abstract UserDTO userToUserDTO(User user);
+    public abstract UserDTO userToUserDTO(UserPO userPO);
 
-    public abstract List<UserDTO> userToUserDTO(List<User> user);
+    public abstract List<UserDTO> userToUserDTO(List<UserPO> userPO);
 
     @Mapping(target = "name", source = "username")
     @Mapping(target = "email", source = "workMail")
     @Mapping(target = "createTime", source = "employeeStartDt", dateFormat = "MM-dd-yyyy HH:mm:ss")
-    public abstract User userDTOToUser(UserDTO userDTO);
+    public abstract UserPO userDTOToUser(UserDTO userDTO);
 
-    public abstract List<User> userDTOToUser(List<UserDTO> userDTOS);
+    public abstract List<UserPO> userDTOToUser(List<UserDTO> userDTOS);
 
 }
