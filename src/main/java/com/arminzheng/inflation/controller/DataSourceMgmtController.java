@@ -101,16 +101,13 @@ public class DataSourceMgmtController {
     @PostMapping
     public ResponseEntity<DataSourceDTO> createSql(@RequestBody DataSourceDTO dataSourceDTO) {
         log.info("Creating SQL: {}", dataSourceDTO);
-
         // 设置创建时间和更新时间
         LocalDateTime now = LocalDateTime.now();
         dataSourceDTO.setCreateTime(now);
         dataSourceDTO.setUpdateTime(now);
         dataSourceDTO.setPublished(false);  // 默认未发布
-
         DataSourcePO dataSourcePO = dataSourceConverter.dtoToPO(dataSourceDTO);
         DataSourcePO savedEntity = dataSourceService.save(dataSourcePO);
-
         return new ResponseEntity<>(dataSourceConverter.poToDTO(savedEntity), HttpStatus.CREATED);
     }
 
@@ -125,19 +122,15 @@ public class DataSourceMgmtController {
     public ResponseEntity<DataSourceDTO> updateSql(@PathVariable String id,
             @RequestBody DataSourceDTO dataSourceDTO) {
         log.info("Updating SQL with id: {}", id);
-
         try {
             // 获取现有的SQL
             DataSourcePO existingEntity = dataSourceService.findById(id);
-
             // 更新字段
             existingEntity.setSqlContent(dataSourceDTO.getSqlContent());
             existingEntity.setDescription(dataSourceDTO.getDescription());
             existingEntity.setUpdateTime(LocalDateTime.now());
-
             // 保存更新
             DataSourcePO updatedEntity = dataSourceService.save(existingEntity);
-
             return ResponseEntity.ok(dataSourceConverter.poToDTO(updatedEntity));
         } catch (RuntimeException e) {
             log.error("SQL not found with id: {}", id, e);
@@ -192,7 +185,6 @@ public class DataSourceMgmtController {
     @PostMapping("/{id}/unpublish")
     public ResponseEntity<DataSourceDTO> unpublishSql(@PathVariable String id) {
         log.info("Unpublishing SQL with id: {}", id);
-
         try {
             DataSourcePO unpublishedEntity = dataSourceService.unpublish(id);
             return ResponseEntity.ok(dataSourceConverter.poToDTO(unpublishedEntity));

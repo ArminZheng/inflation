@@ -1,6 +1,6 @@
 package com.arminzheng.inflation.service.impl;
 
-import com.arminzheng.inflation.datasource.MappedStatementBuilder;
+import com.arminzheng.inflation.datasource.MappedStatementContainer;
 import com.arminzheng.inflation.model.DataSourcePO;
 import com.arminzheng.inflation.repository.SqlRepository;
 import com.arminzheng.inflation.service.DataSourceService;
@@ -20,14 +20,14 @@ public class DataSourceServiceImpl implements DataSourceService {
     private static final Logger logger = LoggerFactory.getLogger(DataSourceServiceImpl.class);
 
     private final SqlRepository sqlRepository;
-    private final MappedStatementBuilder mappedStatementBuilder;
+    private final MappedStatementContainer mappedStatementContainer;
     private final String namespace;
 
     public DataSourceServiceImpl(SqlRepository sqlRepository,
-            MappedStatementBuilder mappedStatementBuilder) {
+            MappedStatementContainer mappedStatementContainer) {
         this.sqlRepository = sqlRepository;
-        this.mappedStatementBuilder = mappedStatementBuilder;
-        this.namespace = mappedStatementBuilder.getNamespace();
+        this.mappedStatementContainer = mappedStatementContainer;
+        this.namespace = mappedStatementContainer.getNamespace();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class DataSourceServiceImpl implements DataSourceService {
         DataSourcePO dataSourcePO = findById(id);
 
         // 创建或更新MappedStatement
-        MappedStatement mappedStatement = mappedStatementBuilder.createMappedStatement(
+        MappedStatement mappedStatement = mappedStatementContainer.createMappedStatement(
                 id, dataSourcePO.getSqlContent());
 
         // 更新发布状态
@@ -107,8 +107,7 @@ public class DataSourceServiceImpl implements DataSourceService {
         DataSourcePO dataSourcePO = findById(id);
 
         // 移除MappedStatement
-        String statementId = namespace + "." + id;
-        boolean b = mappedStatementBuilder.removeMappedStatement(statementId);
+        boolean b = mappedStatementContainer.removeMappedStatement(id);
         logger.info("Removed MappedStatement for SQL id: {}, result: {}", id, b);
 
         // 更新发布状态

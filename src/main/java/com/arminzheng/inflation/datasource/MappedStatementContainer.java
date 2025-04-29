@@ -21,9 +21,9 @@ import org.springframework.stereotype.Component;
  * 负责将SQL语句转换为MyBatis的MappedStatement对象
  */
 @Component
-public class MappedStatementBuilder {
+public class MappedStatementContainer {
 
-    private static final Logger logger = LoggerFactory.getLogger(MappedStatementBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(MappedStatementContainer.class);
     
     private final Configuration configuration;
     @Getter
@@ -31,7 +31,7 @@ public class MappedStatementBuilder {
     private String namespace;
     private final XMLLanguageDriver languageDriver;
 
-    public MappedStatementBuilder(SqlSessionFactory factory) {
+    public MappedStatementContainer(SqlSessionFactory factory) {
         this.configuration = factory.getConfiguration();
         this.languageDriver = new XMLLanguageDriver();
         this.namespace = DataSourceConst.SOURCE_MAPPER_NAMESPACE;
@@ -46,7 +46,7 @@ public class MappedStatementBuilder {
      */
     public MappedStatement createMappedStatement(String id, String sql) {
         // 检查是否已存在同名的MappedStatement
-        String statementId = namespace + "." + id;
+        final String statementId = namespace + "." + id;
         if (configuration.hasStatement(statementId)) {
             // 如果已存在，先移除旧的
             removeMappedStatement(id);
@@ -74,6 +74,11 @@ public class MappedStatementBuilder {
 
         logger.info("Created MappedStatement for SQL ID: {}", id);
         return statement;
+    }
+
+    public boolean hasMappedStatement(String id) {
+        String statementId = namespace + "." + id;
+        return configuration.hasStatement(statementId);
     }
 
     /**

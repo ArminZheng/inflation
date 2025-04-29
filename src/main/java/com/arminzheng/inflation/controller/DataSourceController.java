@@ -1,10 +1,12 @@
 package com.arminzheng.inflation.controller;
 
+import com.arminzheng.inflation.datasource.MappedStatementContainer;
 import com.arminzheng.inflation.datasource.SourceMapper;
 import com.arminzheng.inflation.datasource.SqlFileLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/datasource")
 public class DataSourceController {
 
     private final SourceMapper sourceMapper;
     private final SqlFileLoader sqlFileLoader;
-    
-    public DataSourceController(SourceMapper sourceMapper, SqlFileLoader sqlFileLoader) {
-        this.sourceMapper = sourceMapper;
-        this.sqlFileLoader = sqlFileLoader;
-    }
-    
+    private final MappedStatementContainer mappedStatementContainer;
+
     /**
      * 根据数据源ID执行查询
      * 
@@ -41,8 +40,8 @@ public class DataSourceController {
     public ResponseEntity<List<Map<String, Object>>> query(@PathVariable String id) {
         log.info("Executing query for datasource ID: {}", id);
         try {
-            // 检查SQL ID是否存在
-            if (!sqlFileLoader.containsSql(id)) {
+            // 检查 SQL ID 是否存在
+            if (!mappedStatementContainer.hasMappedStatement(id)) {
                 log.error("SQL ID not found: {}", id);
                 return ResponseEntity.notFound().build();
             }
@@ -63,23 +62,20 @@ public class DataSourceController {
      * @return 查询结果
      */
     @PostMapping("/{id}")
-    public ResponseEntity<List<Map<String, Object>>> queryWithParams(
-            @PathVariable String id,
+    public ResponseEntity<List<Map<String, Object>>> queryWithParams(@PathVariable String id,
             @RequestBody(required = false) Map<String, Object> params) {
         
         log.info("Executing query for datasource ID: {} with params: {}", id, params);
         try {
-            // 检查SQL ID是否存在
-            if (!sqlFileLoader.containsSql(id)) {
+            // 检查 SQL ID 是否存在
+            if (!mappedStatementContainer.hasMappedStatement(id)) {
                 log.error("SQL ID not found: {}", id);
                 return ResponseEntity.notFound().build();
             }
-            
             // 如果参数为空，创建一个空的Map
             if (params == null) {
                 params = new HashMap<>();
             }
-            
             // 执行查询
             List<Map<String, Object>> result = sourceMapper.query(id, params);
             return ResponseEntity.ok(result);
@@ -96,7 +92,7 @@ public class DataSourceController {
      */
     @GetMapping
     public ResponseEntity<List<String>> listDataSources() {
-        log.info("Listing all available datasources");
+        log.info("Listing all available dataSources");
         try {
             // 获取所有SQL文件ID
             List<String> dataSourceIds = sqlFileLoader.loadAllSqlFiles().keySet().stream().toList();

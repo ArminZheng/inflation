@@ -2,6 +2,12 @@
 
 **Inflation**, or **Knowledge Inflation**: A TIL-style (Today I Learned) project to track my learning progress.
 
+## Feature
+
+- [x] InfluxDB integration
+- [x] Data Source Query Function
+- [x] Graceful Shutdown
+
 ## Commit Tags Used
 
 ### Frequently Used
