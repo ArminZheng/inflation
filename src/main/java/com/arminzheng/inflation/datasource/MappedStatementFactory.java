@@ -21,9 +21,9 @@ import org.springframework.stereotype.Component;
  * 负责将SQL语句转换为MyBatis的MappedStatement对象
  */
 @Component
-public class MappedStatementContainer {
+public class MappedStatementFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(MappedStatementContainer.class);
+    private static final Logger logger = LoggerFactory.getLogger(MappedStatementFactory.class);
     
     private final Configuration configuration;
     @Getter
@@ -31,7 +31,7 @@ public class MappedStatementContainer {
     private String namespace;
     private final XMLLanguageDriver languageDriver;
 
-    public MappedStatementContainer(SqlSessionFactory factory) {
+    public MappedStatementFactory(SqlSessionFactory factory) {
         this.configuration = factory.getConfiguration();
         this.languageDriver = new XMLLanguageDriver();
         this.namespace = DataSourceConst.SOURCE_MAPPER_NAMESPACE;

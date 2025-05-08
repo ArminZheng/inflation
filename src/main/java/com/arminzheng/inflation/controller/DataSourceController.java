@@ -1,6 +1,6 @@
 package com.arminzheng.inflation.controller;
 
-import com.arminzheng.inflation.datasource.MappedStatementContainer;
+import com.arminzheng.inflation.datasource.MappedStatementFactory;
 import com.arminzheng.inflation.datasource.SourceMapper;
 import com.arminzheng.inflation.datasource.SqlFileLoader;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class DataSourceController {
 
     private final SourceMapper sourceMapper;
     private final SqlFileLoader sqlFileLoader;
-    private final MappedStatementContainer mappedStatementContainer;
+    private final MappedStatementFactory mappedStatementFactory;
 
     /**
      * 根据数据源ID执行查询
@@ -41,7 +41,7 @@ public class DataSourceController {
         log.info("Executing query for datasource ID: {}", id);
         try {
             // 检查 SQL ID 是否存在
-            if (!mappedStatementContainer.hasMappedStatement(id)) {
+            if (!mappedStatementFactory.hasMappedStatement(id)) {
                 log.error("SQL ID not found: {}", id);
                 return ResponseEntity.notFound().build();
             }
@@ -68,7 +68,7 @@ public class DataSourceController {
         log.info("Executing query for datasource ID: {} with params: {}", id, params);
         try {
             // 检查 SQL ID 是否存在
-            if (!mappedStatementContainer.hasMappedStatement(id)) {
+            if (!mappedStatementFactory.hasMappedStatement(id)) {
                 log.error("SQL ID not found: {}", id);
                 return ResponseEntity.notFound().build();
             }

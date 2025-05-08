@@ -22,15 +22,15 @@ public class SourceMapperFactory {
 
     private final SqlSessionFactory sqlSessionFactory;
     private final SqlFileLoader sqlFileLoader;
-    private final MappedStatementContainer mappedStatementContainer;
+    private final MappedStatementFactory mappedStatementFactory;
     private final String namespace;
 
     public SourceMapperFactory(SqlSessionFactory sqlSessionFactory, SqlFileLoader sqlFileLoader,
-            MappedStatementContainer mappedStatementContainer) {
+            MappedStatementFactory mappedStatementFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
         this.sqlFileLoader = sqlFileLoader;
         this.namespace = DataSourceConst.SOURCE_MAPPER_NAMESPACE;
-        this.mappedStatementContainer = mappedStatementContainer;
+        this.mappedStatementFactory = mappedStatementFactory;
     }
     
     /**
@@ -42,7 +42,7 @@ public class SourceMapperFactory {
         // 加载所有SQL文件并创建MappedStatement
         Map<String, String> sqlMap = sqlFileLoader.loadAllSqlFiles();
         for (Map.Entry<String, String> entry : sqlMap.entrySet()) {
-            mappedStatementContainer.createMappedStatement(entry.getKey(), entry.getValue());
+            mappedStatementFactory.createMappedStatement(entry.getKey(), entry.getValue());
             log.info("Created MappedStatement for SQL ID: {}", entry.getKey());
         }
         // 创建动态代理
