@@ -1,2 +1,7 @@
 rootProject.name = 'inflation'
+include 'bill'
+include 'data-center'
+include 'data-init'
+include 'tenant'
+include 'tool'
 
