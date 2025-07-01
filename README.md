@@ -7,6 +7,9 @@
 - [x] InfluxDB integration
 - [x] Data Source Query Function
 - [x] Graceful Shutdown
+- [] DB based MQ system
+- [] DB based distribute ID generator
+- [] DB based distribute lock
 
 ## Commit Tags Used
 
