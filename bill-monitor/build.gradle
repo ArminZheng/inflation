@@ -44,6 +44,11 @@ dependencies {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
     implementation 'org.yaml:snakeyaml:2.4'
+    // drools
+    implementation 'org.drools:drools-core:7.69.0.Final'
+    implementation 'org.drools:drools-compiler:7.69.0.Final'
+    implementation 'org.drools:drools-decisiontables:7.69.0.Final'
+    implementation 'org.drools:drools-mvel:7.69.0.Final'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
