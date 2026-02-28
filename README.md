@@ -10,6 +10,18 @@
 - [] DB based MQ system
 - [] DB based distribute ID generator
 - [] DB based distribute lock
+- [] Drools for monitor
+
+## Tech Stack
+
+Spring StateMachine WebSocket Drools Jackson
+MyBatis MySQL Mongo
+[Dubbo Netty Kafka]
+[Seata Sentinel Nacos Gateway]
+Redis Zookeeper Elasticsearch
+[Resilience4j SpringRetry]
+[Guava POI Nginx]
+ShardingSphere
 
 ## Commit Tags Used
 
