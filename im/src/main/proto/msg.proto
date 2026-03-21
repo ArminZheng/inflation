@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package com.arminzheng.im.protocol;
+
+option java_package = "com.arminzheng.im.protocol";
+option java_outer_classname = "ProtoMsg";
+
+// 消息类型
+enum HeadType {
+    LOGIN_REQUEST = 0; // 登录请求
+    LOGIN_RESPONSE = 1; // 登录响应
+    LOGOUT_REQUEST = 2; // 登出请求
+    LOGOUT_RESPONSE = 3; // 登出响应
+    KEEPALIVE_REQUEST = 4; // 心跳请求
+    KEEPALIVE_RESPONSE = 5; // 心跳响应
+    MESSAGE_REQUEST = 6; // 消息请求
+    MESSAGE_RESPONSE = 7; // 消息响应
+    MESSAGE_NOTIFICATION = 8; // 消息通知
+}
+
+// 消息头
+message Head {
+    HeadType msgType = 1; // 消息类型
+    int32 msgId = 2; // 消息id
+    int64 timestamp = 3; // 时间戳
+    int32 status = 4; // 状态码
+}
+
+// 消息体
+message Message {
+    HeadType type = 1;
+    Head head = 2; // 消息头
+    int64 sequence = 3; // 序列号
+    string sessionId = 4; // 会话id
+
+    oneof body {
+        LoginRequest loginRequest = 5;
+        LoginResponse loginResponse = 6;
+        MessageRequest messageRequest = 7;
+        MessageResponse messageResponse = 8;
+        MessageNotification messageNotification = 9;
+    }
+}
+
+// 登录请求
+message LoginRequest {
+    string uid = 1; // 用户id
+    string deviceId = 2; // 设备id
+    string token = 3; // token
+    uint32 platform = 4; // 平台
+    string appVersion = 5; // app版本
+}
+
+// 登录响应
+message LoginResponse {
+    bool result = 1; // 结果
+    uint32 code = 2; // 状态码
+    string info = 3; // 信息
+    uint32 expose = 4; // 扩展
+}
+
+// 消息请求 (单聊)
+message MessageRequest {
+    string msgId = 1; // 消息id
+    string from = 2; // 发送者
+    string to = 3; // 接收者
+    uint64 time = 4; // 发送时间
+    uint32 msgType = 5; // 消息类型 1:文本 2:图片 3:语音
+    string content = 6; // 内容
+    string url = 7; // url
+    string property = 8; // 扩展属性
+    string fromNick = 9; // 发送者昵称
+    string json = 10; // json
+}
+
+// 消息响应
+message MessageResponse {
+    bool result = 1; // 结果
+    uint32 code = 2; // 状态码
+    string info = 3; // 信息
+    uint32 expose = 4; // 扩展
+    bool lastBlock = 5; // 是否最后一块
+    fixed64 blockIndex = 6; // 块索引
+}
+
+// 消息通知
+message MessageNotification {
+    string msgId = 1; // 消息id
+    string sender = 2; // 发送者
+    uint64 timestamp = 3; // 时间戳
+    string content = 4; // 内容
+    uint32 msgType = 5; // 消息类型
+}
